@@ -1,0 +1,12 @@
+[submodule "modules/async"]
+	path = modules/async
+	url = https://github.com/racker/luvit-async.git
+[submodule "modules/process_info"]
+	path = modules/process_info
+	url = https://github.com/Kami/luvit-process-info.git
+[submodule "modules/service_registry"]
+	path = modules/service_registry
+	url = https://github.com/Kami/luvit-service-registry-client.git
+[submodule "modules/keystone_client"]
+	path = modules/keystone_client
+	url = https://github.com/racker/luvit-keystone-client.git
