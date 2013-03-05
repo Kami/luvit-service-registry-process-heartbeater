@@ -98,8 +98,8 @@ function ProcessHeartbeater:_registerProcess(process, configObject)
         ['pid'] = tostring(pid),
         ['ppid'] = tostring(process:getPpid()),
         ['name'] = configObject['name'],
-        --['exe'] = process:getExe(),
-        --['cwd'] = process:getCwd()
+        ['exe'] = process:getExe(),
+        ['cwd'] = process:getCwd()
       }
       payload = {['metadata'] = metadata}
 
