@@ -95,23 +95,10 @@ function ProcessHeartbeater:_registerProcess(process, configObject)
       local serviceId, metadata, payload, status, value
 
       serviceId = fmt('%s-%s', configObject['name'], pid)
-      metadata = {
-        ['pid'] = tostring(pid),
-        ['ppid'] = tostring(process:getPpid()),
-        ['name'] = configObject['name']
-      }
-
-      status, result = pcall(bind(process.getExe, process))
-
-      if status then
-        metadata['exe'] = result
-      end
-
-      status, result = pcall(bind(process.getCwd, process))
-
-      if status then
-        metadata['cwd'] = result
-      end
+      metadata = process:getAsTable({'pid', 'ppid', 'cwd', 'exe'}, true)
+      metadata['pid'] = tostring(metadata['pid'])
+      metadata['ppid'] = tostring(metadata['ppid'])
+      metadata['name'] = configObject['name']
 
       payload = {['metadata'] = metadata}
 
