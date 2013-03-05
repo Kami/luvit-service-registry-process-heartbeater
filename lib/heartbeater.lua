@@ -17,6 +17,7 @@ limitations under the License.
 local Object = require('core').Object
 local timer = require('timer')
 local fmt = require('string').format
+local bind = require('utils').bind
 
 local async = require('async')
 
@@ -91,16 +92,27 @@ function ProcessHeartbeater:_registerProcess(process, configObject)
     end,
 
     function(sessionId, _, hb, callback)
-      local serviceId, metadata, payload
+      local serviceId, metadata, payload, status, value
 
       serviceId = fmt('%s-%s', configObject['name'], pid)
       metadata = {
         ['pid'] = tostring(pid),
         ['ppid'] = tostring(process:getPpid()),
-        ['name'] = configObject['name'],
-        ['exe'] = process:getExe(),
-        ['cwd'] = process:getCwd()
+        ['name'] = configObject['name']
       }
+
+      status, result = pcall(bind(process.getExe, process))
+
+      if status then
+        metadata['exe'] = result
+      end
+
+      status, result = pcall(bind(process.getCwd, process))
+
+      if status then
+        metadata['cwd'] = result
+      end
+
       payload = {['metadata'] = metadata}
 
       self._srClient.services:createService(sessionId, serviceId, payload, function(err, res)
