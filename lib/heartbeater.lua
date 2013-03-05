@@ -84,7 +84,7 @@ end
 function ProcessHeartbeater:_registerProcess(process, configObject)
   local pid = process:getPid()
 
-  self._activeProcesses[pid] = process
+  self._activeProcesses[pid] = true
   async.waterfall({
     function(callback)
       local heartbeatTimeout = configObject.heartbeat_timeout
@@ -127,9 +127,8 @@ function ProcessHeartbeater:_registerProcess(process, configObject)
 end
 
 function ProcessHeartbeater:_deregisterProcess(pid)
-  local process, hb
+  local hb
 
-  process = self._activeProcesses[pid]
   hb = self._heartbeaters[pid]
 
   if hb ~= nil then
