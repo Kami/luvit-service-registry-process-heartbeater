@@ -16,6 +16,7 @@ limitations under the License.
 
 local Object = require('core').Object
 local string = require('string')
+local bind = require('utils').bind
 
 local ProcessScanner = require('process_info').ProcessScanner
 
@@ -51,11 +52,14 @@ function ProcessFinder:_matchesPattern(process)
   local cmdline, values, match, result
 
   for key, values in pairs(self._config) do
-    cmdline = process:getCmdline()
-    match = string.find(cmdline, values['pattern'])
+    status, cmdline = pcall(bind(process.getCmdline, process))
 
-    if match ~= nil then
-      return values
+    if status then
+      match = string.find(cmdline, values['pattern'])
+
+      if match ~= nil then
+        return values
+      end
     end
   end
 
