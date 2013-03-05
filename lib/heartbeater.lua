@@ -128,7 +128,9 @@ function ProcessHeartbeater:_deregisterProcess(pid)
   process = self._activeProcesses[pid]
   hb = self._heartbeaters[pid]
 
-  hb:stop()
+  if hb ~= nil then
+    hb:stop()
+  end
 
   self._activeProcesses[pid] = nil
   self._heartbeaters[pid] = nil
