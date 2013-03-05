@@ -110,6 +110,11 @@ function ProcessHeartbeater:_registerProcess(process, configObject)
 
     function(hb, callback)
       self._heartbeaters[pid] = hb
+      hb:on('error', function(err)
+        -- TODO: re-register
+        print('Heartbeater emitted an error: ' .. err['details'])
+      end)
+
       hb:start()
       callback()
     end
